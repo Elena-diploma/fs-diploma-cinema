@@ -15,7 +15,7 @@ class TakenPlaceController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         return TakenPlace::all();
     }
@@ -25,7 +25,7 @@ class TakenPlaceController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(): Response
     {
         //
     }
@@ -36,7 +36,7 @@ class TakenPlaceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         //
     }
@@ -47,7 +47,7 @@ class TakenPlaceController extends Controller
      * @param  \App\Models\TakenPlace  $takenPlace
      * @return Response
      */
-    public function show(TakenPlace $takenPlace)
+    public function show(TakenPlace $takenPlace): Response
     {
         //
     }
@@ -58,7 +58,7 @@ class TakenPlaceController extends Controller
      * @param  \App\Models\TakenPlace  $takenPlace
      * @return Response
      */
-    public function edit(TakenPlace $takenPlace)
+    public function edit(TakenPlace $takenPlace): Response
     {
         //
     }
@@ -66,11 +66,10 @@ class TakenPlaceController extends Controller
     /**
      * Обновление занятых места
      *
-     * @param  \Illuminate\Http\Request  $request
-//     * @param  \App\Models\TakenPlace  $takenPlace
-     * @return Response
+     * @param Request $request
+     * @return string
      */
-    public function update(Request $request)
+    public function update(Request $request): string
     {
         $hall_id = Hall::where('name', $request->hallName)->first()->id;
 
@@ -89,7 +88,7 @@ class TakenPlaceController extends Controller
                 $price = $standartVip;
             }
             $str = $row . '/' . $place;
-            array_push($placesArray, $str);
+            $placesArray[] = $str;
             $totalPrice += $price;
         }
         $takenPlacesStr = join(', ', $placesArray);
@@ -104,8 +103,8 @@ class TakenPlaceController extends Controller
      * @param  \App\Models\TakenPlace  $takenPlace
      * @return Response
      */
-    public function destroy(TakenPlace $takenPlace)
+    public function destroy(TakenPlace $takenPlace): Response
     {
-        //
+        return new Response();
     }
 }

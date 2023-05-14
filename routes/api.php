@@ -18,14 +18,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//Route::post('/token/create');
-
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('/hall', \App\Http\Controllers\Admin\HallController::class);
 
     Route::post('/hall/{id}/active/{is_active}', [\App\Http\Controllers\Admin\HallController::class, 'setActive']);
 
-    Route::apiResource('hall_size', \App\Http\Controllers\HallSizeController::class);
+    Route::apiResource('hall-size', \App\Http\Controllers\HallSizeController::class);
 
     Route::apiResource('place', \App\Http\Controllers\Admin\PlaceController::class);
 
@@ -33,5 +31,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::apiResource('/movie', \App\Http\Controllers\MovieController::class);
 
-    Route::apiResource('/movie_show', \App\Http\Controllers\MovieShowController::class);
+    Route::apiResource('/movie-show', \App\Http\Controllers\MovieShowController::class);
 });

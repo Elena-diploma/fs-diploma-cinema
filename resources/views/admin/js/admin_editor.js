@@ -31,7 +31,7 @@ $(document).ready(function () {
         e.preventDefault();
         $hall_name = $('#hallNameAdd').val()
         $.ajax({
-            url: '/hall_add',
+            url: '/hall-add',
             type: 'POST',
             data: {
                 name: $hall_name
@@ -41,7 +41,7 @@ $(document).ready(function () {
             },
             success: function (data) {
                 $.ajax({
-                    url: '/hall_size',
+                    url: '/hall-size',
                     type: 'POST',
                     data: {
                         hall_id: data.hall_id,
@@ -68,7 +68,7 @@ for (let i = 0; i < trashHall.length; i++) {
         $(document).ready(function () {
             $('#hallDeleteForm').submit(function () {
                 $.ajax({
-                    url:'/delete_hall',
+                    url:'/delete-hall',
                     type: 'POST',
                     data: {
                         hall_id: id,
@@ -196,7 +196,7 @@ $(document).ready(function () {
                     }
                 })
              $.ajax({
-                 url: '/hall_chair',
+                 url: '/hall-chair',
                  type: 'POST',
                  data: {
                      result: result,
@@ -225,7 +225,7 @@ chairPrice.forEach(hall => hall.addEventListener('click', function (e) {
     standartPrice.value = '';
     vipPrice.value = '';
     $.ajax({
-        url: '/show_price',
+        url: '/show-price',
         type: 'GET',
         data: {
             hall_id: hall.value
@@ -239,7 +239,7 @@ chairPrice.forEach(hall => hall.addEventListener('click', function (e) {
                 vipPrice.value = data.find(el => el.status === 'vip').price
             } else {
                 $.ajax({
-                    url: '/save_price',
+                    url: '/save-price',
                     type: 'POST',
                     data: {
                         result: [
@@ -270,7 +270,7 @@ chairPrice.forEach(hall => hall.addEventListener('click', function (e) {
     $('#savePrice').click(function () {
         if(hall.checked) {
             $.ajax({
-                url: '/save_price',
+                url: '/save-price',
                 type: 'POST',
                 data: {
                     result: [
@@ -326,7 +326,7 @@ $(document).ready(function () {
 
 
     $.ajax({
-        url: '/add_movie',
+        url: '/add-movie',
         type: 'POST',
         data: {
             title: movieName,
@@ -351,7 +351,7 @@ $(document).ready(function () {
         let movieName = $('#seance_movieName').val();
 
         $.ajax({
-            url: '/delete_movie',
+            url: '/delete-movie',
             type: 'POST',
             data: {
                 title: movieName,
@@ -389,7 +389,7 @@ showMovie.forEach(movie => {
 
         $('#delete_hall_show').submit(function () {
             $.ajax({
-                url: '/delete_movie_show',
+                url: '/delete-movie-show',
                 type: 'POST',
                 data: {
                     movieName: movieName,
@@ -440,7 +440,7 @@ $(document).ready(function () {
 
 
         $.ajax({
-            url: '/add_movie_show',
+            url: '/add-movie-show',
             type: 'POST',
             data: {
                 hall_id: hallId,
@@ -492,7 +492,7 @@ startSales.forEach(radio => {
                 let hallId = $(radio).val();
 
                 $.ajax({
-                    url: '/start_of_sales',
+                    url: '/start-of-sales',
                     type: 'POST',
                     data: {
                         id: hallId

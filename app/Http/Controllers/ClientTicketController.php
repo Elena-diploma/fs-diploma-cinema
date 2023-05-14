@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Hall;
 use App\Models\MovieShow;
 use App\Models\TakenPlace;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ClientTicketController extends Controller
@@ -13,7 +15,7 @@ class ClientTicketController extends Controller
     /**
      * возвращает view билетов пользователя
      */
-    public function index()
+    public function index(): Factory|View|Application
     {
         $hall_name = $_GET['hall_name'];
         $movie_title = $_GET['movie_title'];
@@ -35,7 +37,8 @@ class ClientTicketController extends Controller
         ]);
     }
 
-    public function hallUpdate($hallName, $seance, $takenPlaces, $takenSeats) {
+    public function hallUpdate($hallName, $seance, $takenPlaces, $takenSeats): void
+    {
         $hall_id = Hall::where('name', $hallName)->first()->id;
         $seance_id = MovieShow::where('hall_id', $hall_id)->where('start_time', $seance)->first()->id;
 

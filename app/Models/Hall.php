@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Hall extends Model
 {
@@ -19,17 +20,26 @@ class Hall extends Model
         'is_active' => 'integer'
     ];
 
-    public function seances()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function seances(): HasMany
     {
         return $this->hasMany(\App\Models\MovieShow::class);
     }
 
-    public function seats()
+    /**
+     * @return HasMany
+     */
+    public function seats(): HasMany
     {
         return $this->hasMany(\App\Models\Place::class);
     }
 
-    public function takenSeat()
+    /**
+     * @return HasMany
+     */
+    public function takenSeat(): HasMany
     {
         return $this->hasMany(\App\Models\TakenPlace::class);
     }

@@ -11,6 +11,7 @@ use App\Models\MovieShow;
 use App\Models\Place;
 use App\Models\Price;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class HallController extends Controller
@@ -18,9 +19,9 @@ class HallController extends Controller
     /**
      *отображает залы
      *
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
-    public function index()
+    public function index(): mixed
     {
         $halls = Hall::with('seances', 'seats')->join('hall_sizes', 'hall_sizes.id', '=', 'halls.id')->get();
         $movie = Movie::all();
@@ -36,9 +37,9 @@ class HallController extends Controller
     /**
      * новый зал
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function create()
+    public function create(): void
     {
         //
     }
@@ -47,9 +48,9 @@ class HallController extends Controller
      * Сохраняет новый зал
      *
      * @param  HallRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return array
      */
-    public function store(HallRequest $request)
+    public function store(HallRequest $request): array
     {
         Hall::create($request->validated());
         $hall_id = Hall::where('name', $request->name)->first()->id;
@@ -60,9 +61,9 @@ class HallController extends Controller
      * Находит нужный зал
      *
      * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function show(int $id)
+    public function show(int $id): Response
     {
         return Hall::findOrFail($id);
     }
@@ -70,10 +71,10 @@ class HallController extends Controller
     /**
      * Редактирует выбранный зал
      *
-     * @param  \App\Models\Hall  $hall
-     * @return \Illuminate\Http\Response
+     * @param Hall $hall
+     * @return void
      */
-    public function edit(Hall $hall)
+    public function edit(Hall $hall): void
     {
         //
     }
@@ -82,10 +83,10 @@ class HallController extends Controller
      * Обновляет изменения в зале
      *
      * @param HallRequest $request
-     * @param  \App\Models\Hall  $hall
-     * @return \Illuminate\Http\Response
+     * @param Hall $hall
+     * @return bool
      */
-    public function update(HallRequest $request, Hall $hall)
+    public function update(HallRequest $request, Hall $hall): bool
     {
         $hall->fill($request->validated());
         return $hall->save();
@@ -94,10 +95,10 @@ class HallController extends Controller
     /**
      * Удаляет зал
      *
-     * @param  \App\Models\Hall  $hall
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return void
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request): void
     {
         Hall::find($request->hall_id)->delete();
         HallSize::find($request->hall_id)->delete();
@@ -108,15 +109,14 @@ class HallController extends Controller
     /**
      * метод возвращает матрицу свободных билетов
      *
-     * @param  int $id
-     * @param bool $is_active
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return string[]
      */
 
-    public function setActive(Request $request)
+    public function setActive(Request $request): array
     {
         $hall = Hall::findOrFail($request->id);
-        if ($hall->is_active == true) {
+        if ($hall->is_active) {
             $hall->is_active = false;
             $hall->save();
             return ['Открыть продажу билетов', 'Зал Готов к открытию'];
@@ -138,7 +138,7 @@ class HallController extends Controller
     /**
      * метод возвращает матрицу сеансов
      */
-    public function hallSeances($halls, $movie)
+    public function hallSeances($halls, $movie): array
     {
         $arr = [];
 
@@ -149,11 +149,11 @@ class HallController extends Controller
                     $d = (int)($movie->where('id', $halls[$i]->seances[$j]->movie_id)->first()->duration) / 2;
                     $st = (int)($halls[$i]->seances[$j]->start_time) * 30;
                     $mn = $movie->where('id', $halls[$i]->seances[$j]->movie_id)->first()->title;
-                    array_push($arr[$halls[$i]->id][$j], $d);
-                    array_push($arr[$halls[$i]->id][$j], $st);
-                    array_push($arr[$halls[$i]->id][$j], $mn);
+                    $arr[$halls[$i]->id][$j][] = $d;
+                    $arr[$halls[$i]->id][$j][] = $st;
+                    $arr[$halls[$i]->id][$j][] = $mn;
                 } catch (\Exception $e) {
-                    array_push($arr, null);
+                    $arr[] = null;
                 }
             }
         }
@@ -163,7 +163,7 @@ class HallController extends Controller
     /**
      * метод возвращает матрицу билетов
      */
-    public function seats($halls)
+    public function seats($halls): array
     {
         $arr = [];
         foreach ($halls as $key => $value) {
@@ -173,9 +173,9 @@ class HallController extends Controller
                     $arr[$hall->name][$i][$j] = [];
                     try {
                         $seatStatus = $hall->seats->where('row_num', $i)->where('seat_num', $j)->first()->status;
-                        array_push($arr[$hall->name][$i][$j], $seatStatus);
+                        $arr[$hall->name][$i][$j][] = $seatStatus;
                     } catch (\Exception $e) {
-                        array_push($arr[$hall->name][$i][$j], 'standart');
+                        $arr[$hall->name][$i][$j][] = 'standart';
                     }
                 }
             }
@@ -186,15 +186,15 @@ class HallController extends Controller
     /**
      * метод возвращает матрицу залов
      */
-    public function activeHall($halls, $movieShow)
+    public function activeHall($halls, $movieShow): array
     {
         $arr = [];
         foreach ($halls as $key => $value) {
             $arr[$value->id] = [];
             if ($movieShow->where('hall_id', $value->id)->first()) {
-                array_push($arr[$value->id], 'is_active');
+                $arr[$value->id][] = 'is_active';
             } else {
-                array_push($arr[$value->id], null);
+                $arr[$value->id][] = null;
             }
         }
         return $arr;

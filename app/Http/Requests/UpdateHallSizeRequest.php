@@ -6,6 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class UpdateHallSizeRequest extends FormRequest
 {
@@ -14,7 +15,7 @@ class UpdateHallSizeRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -24,7 +25,7 @@ class UpdateHallSizeRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'rows' => ['required', 'int'],
@@ -32,10 +33,14 @@ class UpdateHallSizeRequest extends FormRequest
         ];
     }
 
-    protected function failedValidation(Validator $validator)
+    /**
+     * @param Validator $validator
+     * @return mixed
+     */
+    protected function failedValidation(Validator $validator): mixed
     {
         throw new HttpResponseException(
-            response($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY)
+            response($validator->errors(), ResponseAlias::HTTP_UNPROCESSABLE_ENTITY)
         );
     }
 }

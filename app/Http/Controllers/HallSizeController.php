@@ -5,16 +5,18 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UpdateHallSizeRequest;
 use App\Models\HallSize;
 use App\Http\Requests\HallSizeRequest;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class HallSizeController extends Controller
 {
     /**
      * Показывает список залов
      *
-     * @return \Illuminate\Http\Response
+     * @return Collection
      */
-    public function index()
+    public function index(): Collection
     {
         return HallSize::all();
     }
@@ -22,9 +24,9 @@ class HallSizeController extends Controller
     /**
      * Показать форму зала
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function create()
+    public function create(): void
     {
         //
     }
@@ -32,10 +34,10 @@ class HallSizeController extends Controller
     /**
      * Сохраняет выбранное место в зале
      *
-     * @param  HallSizeRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param HallSizeRequest $request
+     * @return Response|HallSizeRequest
      */
-    public function store(HallSizeRequest $request)
+    public function store(HallSizeRequest $request): Response|HallSizeRequest
     {
         HallSize::insertGetId($request->validated());
         return $request;
@@ -44,10 +46,10 @@ class HallSizeController extends Controller
     /**
      * Показывает выбранное место в зале
      *
-     * @param  \App\Models\HallSize  $hallSize
-     * @return \Illuminate\Http\Response
+     * @param int $hall_id
+     * @return Response
      */
-    public function show(int $hall_id)
+    public function show(int $hall_id): Response
     {
         return HallSize::findOrFail($hall_id);
     }
@@ -55,10 +57,10 @@ class HallSizeController extends Controller
     /**
      * Редактирует выбранное место в зале
      *
-     * @param  \App\Models\HallSize  $hallSize
-     * @return \Illuminate\Http\Response
+     * @param HallSize $hallSize
+     * @return void
      */
-    public function edit(HallSize $hallSize)
+    public function edit(HallSize $hallSize): void
     {
         //
     }
@@ -67,10 +69,10 @@ class HallSizeController extends Controller
      * Обновляет места в зале
      *
      * @param  UpdateHallSizeRequest  $request
-     * @param  \App\Models\HallSize  $hallSize
-     * @return \Illuminate\Http\Response
+     * @param HallSize $hallSize
+     * @return bool
      */
-    public function update(UpdateHallSizeRequest $request, HallSize $hallSize)
+    public function update(UpdateHallSizeRequest $request, HallSize $hallSize): bool
     {
         $hallSize->fill($request->validated());
         return $hallSize->save();
@@ -79,13 +81,13 @@ class HallSizeController extends Controller
     /**
      * Удаляет места в зале
      *
-     * @param  \App\Models\HallSize  $hallSize
-     * @return \Illuminate\Http\Response
+     * @param HallSize $hallSize
+     * @return Response|null
      */
-    public function destroy(HallSize $hallSize)
+    public function destroy(HallSize $hallSize): ?Response
     {
         if ($hallSize->delete()) {
-            return response(null, Response::HTTP_NO_CONTENT);
+            return response(null, ResponseAlias::HTTP_NO_CONTENT);
         }
         return null;
     }

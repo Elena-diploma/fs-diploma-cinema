@@ -14,7 +14,7 @@ class PlaceRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -24,7 +24,7 @@ class PlaceRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'hall_id' => ['required', 'int'],
@@ -34,7 +34,11 @@ class PlaceRequest extends FormRequest
         ];
     }
 
-    protected function failedValidation(Validator $validator)
+    /**
+     * @param Validator $validator
+     * @return mixed
+     */
+    protected function failedValidation(Validator $validator): mixed
     {
         throw new HttpResponseException(
             response($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY)

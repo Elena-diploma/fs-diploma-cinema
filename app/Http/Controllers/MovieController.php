@@ -13,9 +13,9 @@ class MovieController extends Controller
     /**
      * Показывает список фильмов
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         return Movie::all();
     }
@@ -23,9 +23,9 @@ class MovieController extends Controller
     /**
      * Показывает форму для выбора фильмов
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function create()
+    public function create(): void
     {
         //
     }
@@ -33,10 +33,10 @@ class MovieController extends Controller
     /**
      * Показывает форму для покупки
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param MovieRequest $request
+     * @return void
      */
-    public function store(MovieRequest $request)
+    public function store(MovieRequest $request): void
     {
         Movie::create($request->validated());
     }
@@ -47,7 +47,7 @@ class MovieController extends Controller
      * @param int $id
      * @return Response
      */
-    public function show(int $id)
+    public function show(int $id): Response
     {
         return Movie::findOrFail($id);
     }
@@ -55,10 +55,10 @@ class MovieController extends Controller
     /**
      * форма редактирования фильма
      *
-     * @param  \App\Models\Movie  $movie
-     * @return \Illuminate\Http\Response
+     * @param Movie $movie
+     * @return void
      */
-    public function edit(Movie $movie)
+    public function edit(Movie $movie):void
     {
         //
     }
@@ -67,10 +67,10 @@ class MovieController extends Controller
      * Обновление фильма
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Movie  $movie
-     * @return \Illuminate\Http\Response
+     * @param Movie $movie
+     * @return void
      */
-    public function update(Request $request, Movie $movie)
+    public function update(Request $request, Movie $movie): void
     {
         //
     }
@@ -78,10 +78,10 @@ class MovieController extends Controller
     /**
      * Удаление выбранного фильма
      *
-     * @param  \App\Models\Movie  $movie
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return void
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request): void
     {
         $movie_id = Movie::where('title', $request->title)->first()->id;
         Movie::where('id', $movie_id)->first()->delete();

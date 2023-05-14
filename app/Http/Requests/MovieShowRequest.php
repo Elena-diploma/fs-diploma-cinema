@@ -14,7 +14,7 @@ class MovieShowRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -24,7 +24,7 @@ class MovieShowRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'hall_id' => ['required', 'int'],
@@ -32,7 +32,12 @@ class MovieShowRequest extends FormRequest
             'start_time' => ['required', 'date_format:H:i'],
         ];
     }
-    protected function failedValidation(Validator $validator)
+
+    /**
+     * @param Validator $validator
+     * @return mixed
+     */
+    protected function failedValidation(Validator $validator): mixed
     {
         throw new HttpResponseException(
             response($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY)

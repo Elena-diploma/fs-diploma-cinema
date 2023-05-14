@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PriceRequest;
 use App\Models\Price;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -12,9 +13,9 @@ class PriceController extends Controller
     /**
      * Показывает цены на места в зале
      *
-     * @return \Illuminate\Http\Response
+     * @return Collection
      */
-    public function index()
+    public function index(): Collection
     {
         return Price::all();
     }
@@ -22,9 +23,9 @@ class PriceController extends Controller
     /**
      * Показывает форму для покупки билета
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function create()
+    public function create(): void
     {
         //
     }
@@ -32,10 +33,10 @@ class PriceController extends Controller
     /**
      * Показывает цены на место
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return void
      */
-    public function store($request)
+    public function store(Request $request): void
     {
         $hall_id = $request->result[0]['hall_id'];
         foreach ($request->result as $key) {
@@ -51,9 +52,9 @@ class PriceController extends Controller
      * Показывает цену на выбранное место
      *
      * @param int $hall_id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function show(Request  $request)
+    public function show(Request  $request): Response
     {
         $data = Price::where('hall_id', $request->hall_id)->get();
         if (!count($data)) {
@@ -66,9 +67,9 @@ class PriceController extends Controller
      * редактирование выбранного места
      *
      * @param  \App\Models\Price  $price
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function edit(Price $price)
+    public function edit(Price $price): void
     {
         //
     }
@@ -77,15 +78,14 @@ class PriceController extends Controller
      * Обновление выбранного места
      *
      * @param PriceRequest $request
-     * @param  \App\Models\Price  $price
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function update(Request $request)
+    public function update(Request $request): void
     {
         foreach ($request->result as $key) {
             $seat = Price::where('hall_id', $key['hall_id'])->where('status', $key['status'])->first();
             if ($seat === null) {
-                return $this->store($request);
+                $this->store($request);
             }
 
             if ($key['price'] !== null) {
@@ -99,13 +99,13 @@ class PriceController extends Controller
      * Удаление выбранного места
      *
      * @param  int $hall_id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function destroy(int $hall_id)
+    public function destroy(int $hall_id): Response
     {
         if (Price::where('hall_id', '=', $hall_id)->delete()) {
             return response(null, Response::HTTP_NO_CONTENT);
         }
-        return null;
+        return new Response();
     }
 }

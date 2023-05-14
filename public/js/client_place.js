@@ -36,7 +36,7 @@ buttonAcceptin.addEventListener('click', (event) => {
         }
     }
     $.ajax({
-        url: '/client_hall',
+        url: '/client-hall',
         type: 'GET',
         data: {
             movie: title,

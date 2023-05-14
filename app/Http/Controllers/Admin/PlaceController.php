@@ -27,9 +27,9 @@ class PlaceController extends Controller
     /**
      * Показывает форму для выбора места
      *
-     * @return Response
+     * @return void
      */
-    public function create(): Response
+    public function create(): void
     {
         //
     }
@@ -70,7 +70,7 @@ class PlaceController extends Controller
     /**
      * редактирование выбранного места
      *
-     * @param  \App\Models\Place  $place
+     * @param Place $place
      * @return Response
      */
     public function edit(Place $place)
@@ -82,9 +82,9 @@ class PlaceController extends Controller
      * Обновление выбранного места
      *
      * @param Request $request
-     * @return Response
+     * @return Response|RedirectResponse
      */
-    public function update(Request $request)
+    public function update(Request $request): Response|RedirectResponse
     {
         if ($request->hallSize['rows'] !== 0 && $request->hallSize['rows'] !== 0) {
             $hall = HallSize::where('id', $request->result[0]['hall_id'])->first();
@@ -124,10 +124,10 @@ class PlaceController extends Controller
     /**
      * Удаление выбранного места
      *
-     * @param  \App\Models\Place  $seat
-     * @return Response
+     * @param $id
+     * @return RedirectResponse|null
      */
-    public function destroy($id)
+    public function destroy($id): ?RedirectResponse
     {
         if (Place::where('hall_id', $id)->delete()) {
             return redirect()->route('admin');

@@ -3,10 +3,12 @@
 namespace App\Services;
 
 use App\Models\Movie;
+use Illuminate\Database\Eloquent\Collection;
 
 class MovieService
 {
-    public function getAll() {
+    public function getAll(): Collection
+    {
         return Movie::all();
     }
 }

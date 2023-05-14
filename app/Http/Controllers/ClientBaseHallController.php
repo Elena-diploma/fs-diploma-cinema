@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Hall;
 use App\Models\MovieShow;
-use App\Services\HallService;
 use App\Http\Controllers\Base\BaseHallController;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 
 class ClientBaseHallController extends BaseHallController
 {
     /**
      * метод возвращает view client.hall
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
-    public function index()
+    public function index(): Factory|View|Application
     {
         $halls = $this->cinemaService->getHallService()->getActiveHalls();
         $hall_name = $_GET['hall_name'];

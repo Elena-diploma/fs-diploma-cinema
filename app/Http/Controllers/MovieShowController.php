@@ -8,6 +8,7 @@ use App\Models\Movie;
 use App\Models\MovieShow;
 use App\Models\Place;
 use App\Models\TakenPlace;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 class MovieShowController extends Controller
@@ -15,9 +16,9 @@ class MovieShowController extends Controller
     /**
      * Показывает список фильмов
      *
-     * @return \Illuminate\Http\Response
+     * @return Collection
      */
-    public function index()
+    public function index(): Collection
     {
         return MovieShow::all();
     }
@@ -25,9 +26,9 @@ class MovieShowController extends Controller
     /**
      * Показывает форму для выбора фильмов
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function create()
+    public function create(): void
     {
         //
     }
@@ -35,8 +36,8 @@ class MovieShowController extends Controller
     /**
      * Показывает список фильмов
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return string|void
      */
     public function store(MovieShowRequest $request)
     {
@@ -81,8 +82,8 @@ class MovieShowController extends Controller
     /**
      * Показывает выбранный фильм
      *
-     * @param  in $hall_id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Request
      */
     public function show(Request $request)
     {
@@ -92,10 +93,10 @@ class MovieShowController extends Controller
     /**
      * редактирование выбранного фильма
      *
-     * @param  \App\Models\MovieShow  $movieShow
-     * @return \Illuminate\Http\Response
+     * @param MovieShow $movieShow
+     * @return void
      */
-    public function edit(MovieShow $movieShow)
+    public function edit(MovieShow $movieShow): void
     {
         //
     }
@@ -103,11 +104,11 @@ class MovieShowController extends Controller
     /**
      * Обновление выбранного фильма
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\MovieShow  $movieShow
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param MovieShow $movieShow
+     * @return void
      */
-    public function update(Request $request, MovieShow $movieShow)
+    public function update(Request $request, MovieShow $movieShow): void
     {
         //
     }
@@ -115,10 +116,10 @@ class MovieShowController extends Controller
     /**
      * Удаление выбранного фильма
      *
-     * @param  \App\Models\MovieShow  $movieShow
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return void
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request): void
     {
         $movie_id = Movie::where('title', $request->movieName)->first()->id;
         MovieShow::where('hall_id', $request->hall_id)->where('movie_id', $movie_id)->where('start_time', $request->movieTime)->first()->delete();

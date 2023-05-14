@@ -6,7 +6,11 @@ use App\Models\Hall;
 
 class HallService
 {
-    public function getActiveHalls() {
+    /**
+     * @return mixed
+     */
+    public function getActiveHalls(): mixed
+    {
         return Hall::where('is_active', Hall::$ACTIVE)
             ->join('prices', 'prices.hall_id', '=', 'halls.id')
             ->join('hall_sizes', 'hall_sizes.id', '=', 'halls.id')
@@ -15,16 +19,20 @@ class HallService
             ->get();
     }
 
-    public function getActiveHallsWithSeances() {
+    /**
+     * @return mixed
+     */
+    public function getActiveHallsWithSeances(): mixed
+    {
         return Hall::where('is_active', Hall::$ACTIVE)->with('seances')->get();
     }
 
-    public function getHallByName(String $hallName)
+    public function getHallByName(String $hallName): mixed
     {
         return $this->getActiveHalls()->where('name', $hallName)->first();
     }
 
-    public function getHallMetric(int $hallId, String $metricName)
+    public function getHallMetric(int $hallId, String $metricName): mixed
     {
         return match ($metricName) {
             'rows' => $this->getActiveHalls()->where('id', $hallId)->first()->rows,
@@ -35,7 +43,7 @@ class HallService
     /**
      * метод возвращает матрицу залов
      */
-    public function seats($start_time, $movie)
+    public function seats($start_time, $movie): array
     {
         $halls = $this->getActiveHalls();
         $arr = [];

@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hall;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 
 class ClientPaymentController extends Controller
 {
     /**
      *возвращает view оплаты
      */
-    public function index()
+    public function index(): Factory|View|Application
     {
         $halls = Hall::all();
         $hall_name = $_GET['hall_name'];
